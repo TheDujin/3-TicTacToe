@@ -1,6 +1,13 @@
 #include <iostream>
-
 using namespace std;
+
+/* TicTacToe by Kevin Jin. A command-line based game of TicTacToe between two players.
+ * Known minor bugs:
+ * Inputting nothing as a move causes the program to loop infinitely.
+ * Inputting 9 characters when prompted for a move causes the program to loop infinitely.
+ * Inputting more than 1 character when prompted for "y, n, etc." causes ditto.
+ * Under some conditions the program will print a board condition twice.
+ */
 
 void printBoard(char (*boardPtr)[4]);
 char checkWin(int (*gridPtr)[3]);
@@ -17,6 +24,7 @@ int main() {
   for (int i = 0; i < 10; i++) {
     input[i] = '\0';
   }
+  input[0] = 'x';
   int grid[3][3];
   int (*gridPtr)[3] = grid;
   for (int i = 0; i < 3; i++) {
@@ -49,6 +57,7 @@ int main() {
 	cout << "X turn: ";
 	cin.get(input, 9);
 	cin.get();
+	cout << "Checking X";
 	if (makeMove(X_MOVE, inputPtr, gridPtr, boardPtr)) {
 	  whosTurn = O_MOVE;
 	  cout << "Valid" << endl;
@@ -71,6 +80,7 @@ int main() {
 	}
       }
     }
+    printBoard(boardPtr);
     if (checkWin(gridPtr) == X_MOVE) {
       xWins++;
       cout << "X wins!" << endl << "Total X wins: " << xWins << "   Total O wins: " << oWins << "   Total ties: " << ties << endl; 
@@ -86,6 +96,7 @@ int main() {
     cout << "Play again? (y, n, any other characters will be interpreted as \'y\')" << endl;
     char yesNo = 'a';
     cin >> yesNo;
+    cin.ignore();
     if (yesNo == 'n') {
       isPlaying = false;
       cout << "Thank you for playing!";
